@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hashtag Picker – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2># Beauty Hashtag Picker</h2>
+    <div class="card">
+      <select id="bizType">
+        <option value="lashes">Lashes</option>
+        <option value="brows">Brows</option>
+        <option value="nails">Nails</option>
+        <option value="hair">Hair</option>
+        <option value="spa">Spa</option>
+      </select>
+      <input id="location" placeholder="City or Zip (optional)" />
+      <button class="btn" onclick="generateTags()">Generate</button>
+    </div>
+
+    <div class="card" id="output" style="display:none;">
+      <h3>Hashtags</h3>
+      <textarea id="tagsBox" rows="4" readonly></textarea>
+      <button onclick="copyTags()" class="btn-secondary">📋 Copy</button>
+    </div>
+  </main>
+
+  <script>
+    const presets = {
+      lashes: ['#LashGoals', '#AZLashes', '#LashTech'],
+      brows: ['#BrowGame', '#AZBrows', '#Microblading'],
+      nails: ['#NailArtAZ', '#TucsonNails', '#NailGoals'],
+      hair: ['#HairGoals', '#HairAZ', '#Blowout'],
+      spa: ['#SpaDay', '#AZWellness', '#GlowUp'],
+    };
+
+    function generateTags() {
+      const type = document.getElementById('bizType').value;
+      const city = document.getElementById('location').value.trim();
+      let tags = presets[type];
+      if (city) tags = tags.concat([`#${city.replace(/\s+/g, '')}`, `#${city}Beauty`]);
+      document.getElementById('tagsBox').value = tags.join(' ');
+      document.getElementById('output').style.display = 'block';
+    }
+
+    function copyTags() {
+      navigator.clipboard.writeText(document.getElementById('tagsBox').value);
+      alert('📋 Hashtags copied!');
+    }
+  </script>
+</body>
+</html>
