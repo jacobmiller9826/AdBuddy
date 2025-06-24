@@ -3,84 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Local Reach – AdBuddy AZ</title>
+  <title>AdBuddy AZ – Home</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
   <meta name="theme-color" content="#f4a261" />
-  <link rel="icon" href="icon.png" type="image/png" />
 </head>
 <body>
   <header class="hero">
     <h1>📢 AdBuddy AZ</h1>
-    <p>Simple, powerful ad tools for Arizona businesses.</p>
+    <p>Your all-in-one local ad toolkit.</p>
   </header>
 
   <nav class="card">
+    <h2>🚀 Essentials</h2>
     <a href="wizard.html">🛠️ Ad Wizard</a>
     <a href="flyer.html">📄 Flyer Generator</a>
     <a href="qr.html">📱 QR Code Maker</a>
     <a href="budget.html">💰 Budget Helper</a>
   </nav>
 
-  <main class="features">
-    <section>
-      <h2>✨ Core Features</h2>
-      <ul>
-        <li>Build fast, effective local ads</li>
-        <li>Download flyers and QR codes</li>
-        <li>Estimate budgets by campaign goals</li>
-        <li>Mobile-first and offline-friendly</li>
-      </ul>
-    </section>
+  <nav class="card">
+    <h2>👑 Pro Tools</h2>
+    <a href="calendar.html">📆 Content Calendar</a>
+    <a href="beforeafter.html">📸 Before & After Maker</a>
+    <a href="bio.html">🔗 Bio Link Generator</a>
+    <a href="caption.html">💬 Auto Caption Generator</a>
+    <a href="reel.html">🎞️ Reel Script Writer</a>
+    <a href="countdown.html">⏳ Countdown Maker</a>
+    <a href="sms.html">📲 SMS Campaign Tool</a>
+    <a href="hashtags.html">#️⃣ Beauty Hashtag Picker</a>
+    <a href="colors.html">🎨 Color Palette Locker</a>
+    <a href="locker.html">🔐 Template Saver</a>
+  </nav>
 
-    <section style="text-align:center; margin-top: 2rem;">
-      <h2>Upgrade to Pro</h2>
-      <p>Unlock premium templates and tools for just $9.99</p>
-      <button id="checkout-button" class="btn">Go Pro</button>
-    </section>
+  <nav class="card">
+    <h2>🚧 Beta Tools</h2>
+    <a href="exportpdf.html">📄 PDF Flyer Export</a>
+    <a href="leads.html">📝 Lead Collector + CSV</a>
+    <a href="voiceover.html">🎙️ Voiceover Script Generator</a>
+    <a href="lang.html">🌐 Language Toggle</a>
+  </nav>
 
-    <section class="reset-section">
-      <h3>🔄 Reset App</h3>
-      <button onclick="resetApp()">Clear All Saved Info</button>
-    </section>
-  </main>
+  <section class="card">
+    <h3>Upgrade to Pro</h3>
+    <p>Unlock all tools & templates for just $9.99</p>
+    <button id="checkout-button" class="btn">Go Pro</button>
+  </section>
 
   <footer>
-    <p>&copy; 2025 AdBuddy AZ | Made in Tucson 🌵</p>
+    <p>Made with 💖 in Tucson | &copy; 2025</p>
   </footer>
 
   <script src="common.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
   <script>
-    const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_STRIPE_KEY');
-
+    const stripe = Stripe('pk_test_YOUR_STRIPE_KEY');
     document.getElementById('checkout-button').addEventListener('click', () => {
       stripe.redirectToCheckout({
         lineItems: [{ price: 'price_YOUR_PRICE_ID', quantity: 1 }],
         mode: 'payment',
-        successUrl: window.location.origin + '/?pro=1',
-        cancelUrl: window.location.origin + '/?pro=0',
-      }).then(result => {
-        if (result.error) alert(result.error.message);
-      });
+        successUrl: window.location.href + '?pro=1',
+        cancelUrl: window.location.href + '?pro=0',
+      }).then(r => { if (r.error) alert(r.error.message); });
     });
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('pro') === '1') {
-        localStorage.setItem('localreach_pro', 'true');
-        showToast('🎉 Pro features unlocked!');
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-    });
-
-    function resetApp() {
-      localStorage.clear();
-      showToast("Your saved data has been reset.");
-    }
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
+    if (new URLSearchParams(location.search).get('pro') === '1') {
+      localStorage.setItem('localreach_pro', 'true');
+      alert('🎉 Pro features unlocked!');
     }
   </script>
 </body>
