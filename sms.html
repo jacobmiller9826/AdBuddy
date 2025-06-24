@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Campaign Generator – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>📲 SMS Campaign Tool</h2>
+    <div class="card">
+      <textarea id="smsMessage" rows="4" placeholder="Type your SMS offer..."></textarea>
+      <input id="contacts" placeholder="Comma-separated phone numbers" />
+      <button class="btn" onclick="generateCSV()">Export CSV</button>
+    </div>
+
+    <a id="downloadLink" style="display:none;" class="btn-secondary" download="sms_campaign.csv">📥 Download CSV</a>
+  </main>
+
+  <script>
+    function generateCSV() {
+      const message = document.getElementById('smsMessage').value;
+      const numbers = document.getElementById('contacts').value.split(',').map(n => n.trim()).filter(Boolean);
+      if (!message || numbers.length === 0) return alert("Please enter both message and numbers.");
+
+      const rows = [["Phone", "Message"]];
+      numbers.forEach(n => rows.push([n, message + " Reply STOP to opt out."]));
+      const csv = rows.map(r => r.map(x => `"${x}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.getElementById('downloadLink');
+      link.href = url;
+      link.style.display = 'inline-block';
+    }
+  </script>
+</body>
+</html>
