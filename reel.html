@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reel Script Generator – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>🎞️ IG Reel Script Maker</h2>
+    <div class="card">
+      <input id="offer" placeholder="What are you promoting?" />
+      <select id="vibe">
+        <option value="fun">🎤 Fun</option>
+        <option value="calm">🌸 Calm</option>
+        <option value="boss">💼 Confident</option>
+      </select>
+      <button class="btn" onclick="generateScript()">Generate</button>
+    </div>
+
+    <div class="card" id="scriptResult" style="display:none;">
+      <h3>Script Idea</h3>
+      <p id="scriptOutput"></p>
+    </div>
+  </main>
+
+  <script>
+    function generateScript() {
+      const offer = document.getElementById('offer').value.trim();
+      const tone = document.getElementById('vibe').value;
+      let script = "";
+
+      if (tone === 'fun') {
+        script = `🎬 Show a before shot 👉 switch to a glowing reveal.\nVoiceover: "Ready for this kind of glow? Book now."`;
+      } else if (tone === 'calm') {
+        script = `🌿 Start with slow background music + spa shots.\nVoiceover: "Take time for yourself. You deserve it."`;
+      } else {
+        script = `👑 Bold intro: "Your next level look starts here."\n📍 Add location + text overlay: "${offer}"`;
+      }
+
+      document.getElementById('scriptOutput').innerText = script;
+      document.getElementById('scriptResult').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
