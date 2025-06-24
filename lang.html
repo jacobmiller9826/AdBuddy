@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Language Mode – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h2 id="title">🌐 Idioma / Language</h2>
+    <div class="card">
+      <button onclick="setLang('en')" class="btn">🇺🇸 English</button>
+      <button onclick="setLang('es')" class="btn">🇲🇽 Español</button>
+    </div>
+    <div class="card">
+      <p id="message">Welcome to AdBuddy AZ. Select your tools from the menu.</p>
+    </div>
+  </main>
+
+  <script>
+    const messages = {
+      en: {
+        title: "🌐 Language Mode",
+        message: "Welcome to AdBuddy AZ. Select your tools from the menu."
+      },
+      es: {
+        title: "🌐 Modo de Idioma",
+        message: "Bienvenida a AdBuddy AZ. Selecciona tus herramientas del menú."
+      }
+    };
+
+    function setLang(lang) {
+      document.getElementById("title").innerText = messages[lang].title;
+      document.getElementById("message").innerText = messages[lang].message;
+      localStorage.setItem("lang", lang);
+    }
+
+    const savedLang = localStorage.getItem("lang") || "en";
+    setLang(savedLang);
+  </script>
+</body>
+</html>
