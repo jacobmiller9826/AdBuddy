@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Local Reach – Ad Tools for Arizona</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f4a261" />
+  <link rel="icon" href="icon.png" type="image/png" />
+</head>
+<body>
+  <header class="hero">
+    <h1>📢 Local Reach AZ</h1>
+    <p>Your simple, powerful ad helper for Arizona businesses.</p>
+    <a href="wizard.html" class="btn">🚀 Get Started</a>
+  </header>
+
+  <main class="features">
+    <section>
+      <h2>✨ Features</h2>
+      <ul>
+        <li>🛠️ Ad Wizard</li>
+        <li>🖨️ Flyer Generator (Coming Soon)</li>
+        <li>💰 Budget Helper (Coming Soon)</li>
+        <li>📱 QR Code Maker (Coming Soon)</li>
+        <li>🔓 Pro Upgrade</li>
+      </ul>
+    </section>
+
+    <section style="text-align:center; margin-top: 2rem;">
+      <h2>Upgrade to Pro</h2>
+      <p>Unlock premium templates and downloads.</p>
+      <button id="checkout-button" class="btn">Go Pro – $9.99</button>
+    </section>
+
+    <section class="reset-section">
+      <h3>🔄 Reset Your Data</h3>
+      <button onclick="resetApp()">Clear All Saved Info</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Local Reach AZ | Made in Tucson 🌵</p>
+  </footer>
+
+  <script src="common.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe = Stripe('pk_test_YOUR_PUBLISHABLE_STRIPE_KEY');
+
+    document.getElementById('checkout-button').addEventListener('click', () => {
+      stripe.redirectToCheckout({
+        lineItems: [{ price: 'price_YOUR_PRICE_ID', quantity: 1 }],
+        mode: 'payment',
+        successUrl: window.location.origin + '/?pro=1',
+        cancelUrl: window.location.origin + '/?pro=0',
+      }).then(result => {
+        if (result.error) alert(result.error.message);
+      });
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('pro') === '1') {
+        localStorage.setItem('localreach_pro', 'true');
+        showToast('🎉 Pro features unlocked!');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    });
+
+    function resetApp() {
+      localStorage.clear();
+      showToast("Your saved data has been reset.");
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
