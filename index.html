@@ -8,6 +8,79 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon.png" />
   <meta name="theme-color" content="#f4a261" />
+  <style>
+    nav.card {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    nav.card a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 46%;
+      min-height: 90px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 12px;
+      text-align: center;
+      color: #333;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.2s ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav.card a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    nav.card a::after {
+      content: "";
+      position: absolute;
+      background: rgba(244, 162, 97, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      width: 100px;
+      height: 100px;
+      opacity: 0;
+      transition: 0.6s ease-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav.card a:active::after {
+      transform: scale(2);
+      opacity: 1;
+      transition: 0s;
+    }
+
+    .ripple {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="hero">
@@ -17,32 +90,32 @@
 
   <nav class="card">
     <h2>🚀 Essentials</h2>
-    <a href="wizard.html">🛠️ Ad Wizard</a>
-    <a href="flyer.html">📄 Flyer Generator</a>
-    <a href="qr.html">📱 QR Code Maker</a>
-    <a href="budget.html">💰 Budget Helper</a>
+    <a href="wizard.html">🛠️<br/>Ad Wizard</a>
+    <a href="flyer.html">📄<br/>Flyer Generator</a>
+    <a href="qr.html">📱<br/>QR Code Maker</a>
+    <a href="budget.html">💰<br/>Budget Helper</a>
   </nav>
 
   <nav class="card">
     <h2>👑 Pro Tools</h2>
-    <a href="calendar.html">📆 Content Calendar</a>
-    <a href="beforeafter.html">📸 Before & After Maker</a>
-    <a href="bio.html">🔗 Bio Link Generator</a>
-    <a href="caption.html">💬 Auto Caption Generator</a>
-    <a href="reel.html">🎞️ Reel Script Writer</a>
-    <a href="countdown.html">⏳ Countdown Maker</a>
-    <a href="sms.html">📲 SMS Campaign Tool</a>
-    <a href="hashtags.html">#️⃣ Beauty Hashtag Picker</a>
-    <a href="colors.html">🎨 Color Palette Locker</a>
-    <a href="locker.html">🔐 Template Saver</a>
+    <a href="calendar.html">📆<br/>Content Calendar</a>
+    <a href="beforeafter.html">📸<br/>Before & After</a>
+    <a href="bio.html">🔗<br/>Bio Link</a>
+    <a href="caption.html">💬<br/>Auto Captions</a>
+    <a href="reel.html">🎞️<br/>Reel Scripts</a>
+    <a href="countdown.html">⏳<br/>Countdowns</a>
+    <a href="sms.html">📲<br/>SMS Ads</a>
+    <a href="hashtags.html">#️⃣<br/>Hashtag Picker</a>
+    <a href="colors.html">🎨<br/>Color Locker</a>
+    <a href="locker.html">🔐<br/>Templates</a>
   </nav>
 
   <nav class="card">
     <h2>🚧 Beta Tools</h2>
-    <a href="exportpdf.html">📄 PDF Flyer Export</a>
-    <a href="leads.html">📝 Lead Collector + CSV</a>
-    <a href="voiceover.html">🎙️ Voiceover Script Generator</a>
-    <a href="lang.html">🌐 Language Toggle</a>
+    <a href="exportpdf.html">📄<br/>Export to PDF</a>
+    <a href="leads.html">📝<br/>Lead Collector</a>
+    <a href="voiceover.html">🎙️<br/>Voiceover Script</a>
+    <a href="lang.html">🌐<br/>Language Toggle</a>
   </nav>
 
   <section class="card">
@@ -72,6 +145,18 @@
       localStorage.setItem('localreach_pro', 'true');
       alert('🎉 Pro features unlocked!');
     }
+
+    // Ripple Effect
+    document.querySelectorAll('nav.card a').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.left = `${e.offsetX}px`;
+        ripple.style.top = `${e.offsetY}px`;
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
   </script>
 </body>
 </html>
