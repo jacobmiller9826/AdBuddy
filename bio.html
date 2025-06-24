@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bio Link Generator – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>🔗 Instagram Bio Link Page</h2>
+    <div class="card">
+      <input id="bizName" placeholder="Business Name" />
+      <input id="link1" placeholder="Booking Link (optional)" />
+      <input id="link2" placeholder="Instagram Link (optional)" />
+      <input id="link3" placeholder="Special Offer Page (optional)" />
+      <button onclick="generateBio()" class="btn">Generate Page</button>
+    </div>
+    <div id="bioPreview" class="card" style="display:none;">
+      <h3>Preview</h3>
+      <div id="bioPage" style="padding:1rem; background:#fafafa;"></div>
+    </div>
+  </main>
+  <script>
+    function generateBio() {
+      const biz = document.getElementById('bizName').value;
+      const links = [1, 2, 3].map(i => document.getElementById(`link${i}`).value);
+      const container = document.getElementById('bioPage');
+      container.innerHTML = `<h2>${biz}</h2>` + links.filter(Boolean).map(l => `<p><a href="${l}" target="_blank">${l}</a></p>`).join('');
+      document.getElementById('bioPreview').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
