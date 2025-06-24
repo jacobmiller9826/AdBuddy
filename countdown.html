@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Countdown Generator – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>⏳ Countdown Timer for Ads</h2>
+    <div class="card">
+      <label for="days">Offer Ends in:</label>
+      <input type="number" id="days" placeholder="3" />
+      <button onclick="startCountdown()" class="btn">Generate</button>
+    </div>
+    <div id="timerBox" class="card" style="display:none;">
+      <h3>🕒 Countdown</h3>
+      <div id="countdownDisplay" style="font-size:2rem;"></div>
+    </div>
+  </main>
+
+  <script>
+    function startCountdown() {
+      const days = parseInt(document.getElementById('days').value);
+      const end = new Date(Date.now() + days * 86400000);
+      document.getElementById('timerBox').style.display = 'block';
+
+      function update() {
+        const now = new Date();
+        const diff = end - now;
+        if (diff <= 0) {
+          document.getElementById('countdownDisplay').innerText = "⏰ Offer ended!";
+          return;
+        }
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        document.getElementById('countdownDisplay').innerText = `${d}d ${h}h ${m}m left`;
+      }
+
+      update();
+      setInterval(update, 60000); // update every minute
+    }
+  </script>
+</body>
+</html>
