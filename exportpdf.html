@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF Export – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>📄 Export Flyer to PDF</h2>
+    <div class="card">
+      <textarea id="flyerText" placeholder="Paste your flyer text here..." rows="6"></textarea>
+      <button class="btn" onclick="generatePDF()">Download PDF</button>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const text = document.getElementById('flyerText').value;
+      doc.setFontSize(16);
+      doc.text(text, 10, 20);
+      doc.save("flyer.pdf");
+    }
+  </script>
+</body>
+</html>
