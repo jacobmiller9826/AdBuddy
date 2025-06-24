@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Saved Templates – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>🔐 Saved Templates</h2>
+    <div class="card">
+      <textarea id="templateText" placeholder="Paste flyer, caption, or ad here..." rows="4"></textarea>
+      <button onclick="saveTemplate()" class="btn">Save</button>
+    </div>
+
+    <div class="card">
+      <h3>Your Templates</h3>
+      <ul id="savedList"></ul>
+    </div>
+  </main>
+
+  <script>
+    function saveTemplate() {
+      const val = document.getElementById('templateText').value.trim();
+      if (!val) return;
+      const saved = JSON.parse(localStorage.getItem('templates') || "[]");
+      saved.unshift(val);
+      localStorage.setItem('templates', JSON.stringify(saved.slice(0, 10)));
+      loadTemplates();
+      document.getElementById('templateText').value = '';
+    }
+
+    function loadTemplates() {
+      const list = document.getElementById('savedList');
+      const saved = JSON.parse(localStorage.getItem('templates') || "[]");
+      list.innerHTML = saved.map(t => `<li><pre>${t}</pre></li>`).join('');
+    }
+
+    loadTemplates();
+  </script>
+</body>
+</html>
