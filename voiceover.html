@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voiceover Script – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>🎙️ Voiceover Script Generator</h2>
+    <div class="card">
+      <input id="bizType" placeholder="Service or Promo (e.g. Lashes)" />
+      <select id="tone">
+        <option value="calm">🌿 Calm</option>
+        <option value="bold">🔥 Bold</option>
+        <option value="fun">🎉 Fun</option>
+      </select>
+      <button class="btn" onclick="makeScript()">Generate Script</button>
+    </div>
+
+    <div class="card" id="result" style="display:none;">
+      <h3>🎤 Script</h3>
+      <p id="scriptText"></p>
+    </div>
+  </main>
+
+  <script>
+    function makeScript() {
+      const type = document.getElementById('bizType').value;
+      const tone = document.getElementById('tone').value;
+      let script = "";
+
+      if (tone === "calm") {
+        script = `Take a moment for yourself. Experience true self-care with our relaxing ${type} service. You deserve it.`;
+      } else if (tone === "bold") {
+        script = `Stop scrolling. Your next level ${type} is waiting. Book now, slay later.`;
+      } else {
+        script = `Hey beautiful! Wanna glow up? Our ${type} special is fire – don’t miss it!`;
+      }
+
+      document.getElementById('scriptText').innerText = script;
+      document.getElementById('result').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
