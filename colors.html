@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color Palette – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h2>🎨 Brand Color Picker</h2>
+    <div class="card">
+      <label>Main Color:</label>
+      <input type="color" id="color1" value="#f4a261" />
+      <label>Accent Color:</label>
+      <input type="color" id="color2" value="#2a9d8f" />
+      <label>Text Color:</label>
+      <input type="color" id="color3" value="#000000" />
+      <button onclick="saveColors()" class="btn">Save</button>
+    </div>
+
+    <div class="card" id="preview" style="margin-top:1rem;">
+      <h3>Preview</h3>
+      <div id="swatches" style="display:flex; gap:10px;"></div>
+    </div>
+  </main>
+
+  <script>
+    function saveColors() {
+      const c1 = document.getElementById('color1').value;
+      const c2 = document.getElementById('color2').value;
+      const c3 = document.getElementById('color3').value;
+      localStorage.setItem('brandColors', JSON.stringify({ c1, c2, c3 }));
+      renderSwatches(c1, c2, c3);
+    }
+
+    function renderSwatches(c1, c2, c3) {
+      const box = document.getElementById('swatches');
+      box.innerHTML = [c1, c2, c3].map(c => `<div style="width:50px;height:50px;background:${c};border:1px solid #000;"></div>`).join('');
+    }
+
+    const saved = JSON.parse(localStorage.getItem('brandColors') || "{}");
+    if (saved.c1) renderSwatches(saved.c1, saved.c2, saved.c3);
+  </script>
+</body>
+</html>
