@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lead Collector – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>📝 Lead Collector</h2>
+    <div class="card">
+      <input id="leadName" placeholder="Name" />
+      <input id="leadEmail" placeholder="Email" />
+      <input id="leadPhone" placeholder="Phone" />
+      <button onclick="addLead()" class="btn">Save Lead</button>
+    </div>
+
+    <div class="card">
+      <h3>📥 Leads</h3>
+      <ul id="leadList"></ul>
+      <button onclick="exportLeads()" class="btn-secondary">Export CSV</button>
+    </div>
+
+    <a id="csvDownload" style="display:none;" download="leads.csv">Download CSV</a>
+  </main>
+
+  <script>
+    const leads = JSON.parse(localStorage.getItem('leads') || "[]");
+
+    function addLead() {
+      const name = document.getElementById('leadName').value;
+      const email = document.getElementById('leadEmail').value;
+      const phone = document.getElementById('leadPhone').value;
+      leads.push({ name, email, phone });
+      localStorage.setItem('leads', JSON.stringify(leads));
+      renderLeads();
+      document.getElementById('leadName').value = '';
+      document.getElementById('leadEmail').value = '';
+      document.getElementById('leadPhone').value = '';
+    }
+
+    function renderLeads() {
+      const ul = document.getElementById('leadList');
+      ul.innerHTML = leads.map(l => `<li>${l.name} – ${l.email}</li>`).join('');
+    }
+
+    function exportLeads() {
+      const csv = ["Name,Email,Phone", ...leads.map(l => `"${l.name}","${l.email}","${l.phone}"`)].join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.getElementById('csvDownload');
+      link.href = url;
+      link.style.display = 'inline-block';
+      link.click();
+    }
+
+    renderLeads();
+  </script>
+</body>
+</html>
