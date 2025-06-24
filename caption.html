@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caption Generator – AdBuddy AZ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h2>💬 Auto Caption Generator</h2>
+    <div class="card">
+      <textarea id="captionInput" placeholder="Describe your ad, service, or offer..." rows="4"></textarea>
+      <label>Pick a style:</label>
+      <select id="tone">
+        <option value="friendly">💖 Friendly</option>
+        <option value="bold">🔥 Bold</option>
+        <option value="chill">🌿 Chill</option>
+        <option value="boss">👑 Boss Babe</option>
+      </select>
+      <button class="btn" onclick="generateCaption()">Generate</button>
+    </div>
+
+    <div class="card" id="output" style="display:none;">
+      <h3>Your Caption</h3>
+      <p id="captionBox"></p>
+      <button onclick="copyCaption()" class="btn-secondary">📋 Copy</button>
+    </div>
+  </main>
+
+  <script>
+    function generateCaption() {
+      const text = document.getElementById("captionInput").value;
+      const tone = document.getElementById("tone").value;
+      let emoji = { friendly: "✨", bold: "🔥", chill: "🌿", boss: "👑" }[tone];
+      let tag = "#TucsonBeauty #AZGlow #AdBuddyAZ";
+      const caption = `${emoji} ${text.trim()} ${emoji}\n\nBook now 👉 link in bio!\n${tag}`;
+      document.getElementById("captionBox").innerText = caption;
+      document.getElementById("output").style.display = "block";
+    }
+
+    function copyCaption() {
+      const text = document.getElementById("captionBox").innerText;
+      navigator.clipboard.writeText(text);
+      alert("📋 Copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
