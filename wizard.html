@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ad Wizard – Local Reach AZ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h2>Create Your Ad</h2>
+    <div class="card">
+      <label for="preset">Choose a Business Type:</label>
+      <select id="preset">
+        <option value="">-- Select a business --</option>
+        <option value="nails">Nail Salon</option>
+        <option value="tanning">Tanning</option>
+        <option value="eyebrows">Eyebrow Studio</option>
+        <option value="waxing">Waxing</option>
+        <option value="massage">Massage Therapy</option>
+        <option value="skincare">Skincare</option>
+        <option value="lashes">Lashes</option>
+        <option value="makeup">Makeup Artist</option>
+        <option value="spa">Day Spa</option>
+        <option value="boutique">Women's Boutique</option>
+      </select>
+
+      <label for="bizName">Business Name:</label>
+      <input type="text" id="bizName" />
+
+      <label for="offer">Offer or Service:</label>
+      <input type="text" id="offer" />
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" />
+
+      <label for="special">Special Deal:</label>
+      <input type="text" id="special" />
+
+      <label for="contact">Contact Info:</label>
+      <input type="text" id="contact" />
+
+      <button onclick="generateAd()" class="btn">Generate Ad</button>
+    </div>
+
+    <div id="result" class="card" style="display:none;">
+      <h3>Your Ad Preview</h3>
+      <pre id="output"></pre>
+    </div>
+  </main>
+  <script src="common.js"></script>
+  <script src="wizard.js"></script>
+</body>
+</html>
