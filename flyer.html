@@ -2,72 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>📄 Flyer Generator – AdBuddy AZ</title>
+  <title>🧾 Flyer Generator – AdBuddy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1em;
+      background: #fff0f5;
+      color: #333;
+    }
+    h1 { text-align: center; }
+    .input-group {
+      margin-bottom: 1em;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.6em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 0.6em 1em;
+      background: #ff5e84;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .flyer-preview {
+      background: white;
+      padding: 1.5em;
+      margin-top: 2em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .flyer-preview h2 {
+      color: #ff5e84;
+    }
+  </style>
 </head>
 <body>
-  <header class="hero">
-    <h1>📄 Flyer Generator</h1>
-    <a href="index.html" class="btn-secondary">← Back to Home</a>
-  </header>
-  <main>
-    <div class="card">
-      <label>Flyer Title</label>
-      <input type="text" id="flyerTitle" placeholder="e.g. 20% Off This Week!" />
+  <h1>🧾 Flyer Generator</h1>
 
-      <label>Details</label>
-      <textarea id="flyerText" placeholder="Describe your offer, dates, location, etc."></textarea>
+  <div class="input-group">
+    <label>Headline:</label>
+    <input type="text" id="headline" placeholder="Grand Opening! 💅">
+  </div>
+  <div class="input-group">
+    <label>Details:</label>
+    <textarea id="details" rows="4" placeholder="Come visit our new beauty bar in Tucson! Specials all weekend."></textarea>
+  </div>
+  <div class="input-group">
+    <label>Contact Info:</label>
+    <input type="text" id="contact" placeholder="Text 520-123-4567 or visit adbuddyaz.com">
+  </div>
+  <button onclick="generateFlyer()">Preview Flyer</button>
+  <button onclick="downloadFlyer()">📄 Download PDF</button>
 
-      <label>Contact Info</label>
-      <input type="text" id="flyerContact" placeholder="e.g. IG @yourbiz | 555-1234" />
+  <div class="flyer-preview" id="flyerOutput" style="display:none;">
+    <h2 id="previewHeadline"></h2>
+    <p id="previewDetails"></p>
+    <p><strong id="previewContact"></strong></p>
+  </div>
 
-      <label>Upload Image (optional)</label>
-      <input type="file" accept="image/*" id="flyerImage" onchange="previewImage(event)" />
-
-      <button class="btn" onclick="updateFlyer()">Preview Flyer</button>
-    </div>
-
-    <div class="card" id="flyerPreview" style="text-align:center; background:#fff; padding:20px;">
-      <h2 id="previewTitle">Your Title Here</h2>
-      <img id="previewImg" src="" style="max-width:100%; max-height:200px; display:none;" />
-      <p id="previewText">Flyer content will go here...</p>
-      <p><strong id="previewContact"></strong></p>
-    </div>
-
-    <div class="card">
-      <button class="btn" onclick="downloadImage()">📸 Download as Image</button>
-      <button class="btn" onclick="downloadPDF()">🖨️ Save as PDF</button>
-    </div>
-  </main>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
-    function previewImage(event) {
-      const img = document.getElementById('previewImg');
-      img.src = URL.createObjectURL(event.target.files[0]);
-      img.style.display = 'block';
+    function generateFlyer() {
+      const headline = document.getElementById('headline').value;
+      const details = document.getElementById('details').value;
+      const contact = document.getElementById('contact').value;
+
+      document.getElementById('previewHeadline').innerText = headline;
+      document.getElementById('previewDetails').innerText = details;
+      document.getElementById('previewContact').innerText = contact;
+      document.getElementById('flyerOutput').style.display = 'block';
     }
 
-    function updateFlyer() {
-      document.getElementById('previewTitle').textContent = document.getElementById('flyerTitle').value || "Your Title Here";
-      document.getElementById('previewText').textContent = document.getElementById('flyerText').value || "Flyer content will go here...";
-      document.getElementById('previewContact').textContent = document.getElementById('flyerContact').value || "";
-    }
+    function downloadFlyer() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const headline = document.getElementById('headline').value;
+      const details = document.getElementById('details').value;
+      const contact = document.getElementById('contact').value;
 
-    function downloadImage() {
-      html2canvas(document.querySelector("#flyerPreview")).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'flyer.png';
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
-    }
-
-    function downloadPDF() {
-      const flyer = document.getElementById('flyerPreview');
-      html2pdf().from(flyer).save('flyer.pdf');
+      doc.setFontSize(22);
+      doc.setTextColor(255, 94, 132);
+      doc.text(headline, 10, 20);
+      doc.setFontSize(14);
+      doc.setTextColor(50, 50, 50);
+      doc.text(details, 10, 40);
+      doc.setFontSize(12);
+      doc.text("Contact: " + contact, 10, 70);
+      doc.save("flyer.pdf");
     }
   </script>
 </body>
