@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AdBuddy Pro Tools – All-in-One</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background: #fdfcfb;
+      color: #333;
+    }
+    header {
+      background: #ff5e84;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      background: #fff0f5;
+      padding: 0.5em;
+      gap: 0.5em;
+    }
+    nav button {
+      padding: 0.6em 1em;
+      border: none;
+      background: #ff6b81;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    nav button:hover {
+      background: #e05770;
+    }
+    section {
+      display: none;
+      padding: 1em;
+      max-width: 700px;
+      margin: auto;
+    }
+    section.active {
+      display: block;
+    }
+    .card {
+      background: white;
+      padding: 1em;
+      border-radius: 8px;
+      margin-bottom: 1em;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.3em;
+      margin-bottom: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button.btn {
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AdBuddy AZ Pro Tools 🌵</h1>
+    <p>All-in-One Toolkit for Arizona Small Businesses</p>
+  </header>
+
+  <nav>
+    <button onclick="showTool('flyer')">Flyer Builder</button>
+    <button onclick="showTool('qr')">QR Code Maker</button>
+    <button onclick="showTool('budget')">Budget Helper</button>
+  </nav>
+
+  <section id="flyer" class="active">
+    <div class="card">
+      <h2>🧾 Flyer Designer</h2>
+      <input type="text" id="flyerHeadline" placeholder="Headline">
+      <textarea id="flyerBody" placeholder="Body text..."></textarea>
+      <input type="text" id="flyerContact" placeholder="Phone, email or link">
+      <button class="btn" onclick="generateFlyer()">Generate Flyer</button>
+    </div>
+    <div class="card" id="flyerOutput" style="display:none;">
+      <h3 id="fHeadline"></h3>
+      <p id="fBody"></p>
+      <strong id="fContact"></strong>
+    </div>
+  </section>
+
+  <section id="qr">
+    <div class="card">
+      <h2>🔗 QR Code Generator</h2>
+      <input type="text" id="qrText" placeholder="Enter URL or text">
+      <button class="btn" onclick="generateQR()">Generate QR</button>
+    </div>
+    <div class="card" id="qrOutput" style="text-align:center;"></div>
+  </section>
+
+  <section id="budget">
+    <div class="card">
+      <h2>🧮 Budget Helper</h2>
+      <input type="number" id="adBudget" placeholder="Total Budget (e.g. 500)">
+      <button class="btn" onclick="splitBudget()">Split Budget</button>
+    </div>
+    <div class="card" id="budgetOutput" style="display:none;">
+      <h3>Recommended Ad Spend:</h3>
+      <ul>
+        <li>📱 Social Media Ads: $<span id="socialAmt"></span></li>
+        <li>📦 Print/Flyers: $<span id="printAmt"></span></li>
+        <li>📸 Photography/Design: $<span id="photoAmt"></span></li>
+        <li>🪄 Boosting/Promos: $<span id="promoAmt"></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    function showTool(id) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function generateFlyer() {
+      document.getElementById('fHeadline').innerText = document.getElementById('flyerHeadline').value;
+      document.getElementById('fBody').innerText = document.getElementById('flyerBody').value;
+      document.getElementById('fContact').innerText = document.getElementById('flyerContact').value;
+      document.getElementById('flyerOutput').style.display = 'block';
+    }
+
+    function generateQR() {
+      const val = document.getElementById('qrText').value;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(val)}&size=200x200`;
+      document.getElementById('qrOutput').innerHTML = `<img src="${qrUrl}" alt="QR Code" />`;
+    }
+
+    function splitBudget() {
+      const total = parseFloat(document.getElementById('adBudget').value);
+      if (!isNaN(total)) {
+        document.getElementById('socialAmt').innerText = (total * 0.4).toFixed(2);
+        document.getElementById('printAmt').innerText = (total * 0.2).toFixed(2);
+        document.getElementById('photoAmt').innerText = (total * 0.25).toFixed(2);
+        document.getElementById('promoAmt').innerText = (total * 0.15).toFixed(2);
+        document.getElementById('budgetOutput').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
