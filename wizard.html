@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>🧙‍♀️ Ad Wizard – AdBuddy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#6c4aff" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -98,17 +101,17 @@
       switch (tone) {
         case "fun and friendly":
           headline = `💅 ${type.charAt(0).toUpperCase() + type.slice(1)} Glow-Up Time!`;
-          body = `Hey Tucson! Looking for a fresh new look? Our ${type} is offering ${offer} just for YOU! 🌈 Come through, feel fabulous.`;
+          body = `Hey ${location || "Tucson"}! Looking for a fresh new look? Our ${type} is offering ${offer} just for YOU! 🌈 Come through, feel fabulous.`;
           hashtags = "#TucsonBeauty #GlowUp #SupportLocal";
           break;
         case "professional and trustworthy":
-          headline = `🌟 Trusted ${type} Services in ${location}`;
-          body = `Looking for quality and care? Our ${type} offers ${offer} with top-rated service. Book your appointment today in ${location}.`;
+          headline = `🌟 Trusted ${type} Services in ${location || "Tucson"}`;
+          body = `Looking for quality and care? Our ${type} offers ${offer} with top-rated service. Book your appointment today in ${location || "Tucson"}.`;
           hashtags = "#LocalBusiness #TucsonAZ #ClientCare";
           break;
         case "bold and hype":
-          headline = `🔥 LIMITED TIME: ${offer.toUpperCase()} at the BEST ${type.toUpperCase()} in ${location.toUpperCase()}!`;
-          body = `Don't wait! Our ${type} is the talk of Tucson! Lock in this deal: ${offer}. You deserve the best 💯`;
+          headline = `🔥 LIMITED TIME: ${offer.toUpperCase()} at the BEST ${type.toUpperCase()} in ${location.toUpperCase() || "TUCSON"}!`;
+          body = `Don't wait! Our ${type} is the talk of the town! Lock in this deal: ${offer}. You deserve the best 💯`;
           hashtags = "#BossBabe #LevelUp #TucsonDeals";
           break;
       }
@@ -132,6 +135,12 @@
       a.download = "ad.txt";
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    // PWA Service Worker registration
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker registered for Ad Wizard"));
     }
   </script>
 </body>
