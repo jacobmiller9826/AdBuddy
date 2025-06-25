@@ -2,31 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>🌐 Link in Bio – AdBuddy AZ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Bio Link Generator – AdBuddy AZ</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="hero">
+    <h1>🌐 Link in Bio</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
   <main>
-    <h2>🔗 Instagram Bio Link Page</h2>
     <div class="card">
-      <input id="bizName" placeholder="Business Name" />
-      <input id="link1" placeholder="Booking Link (optional)" />
-      <input id="link2" placeholder="Instagram Link (optional)" />
-      <input id="link3" placeholder="Special Offer Page (optional)" />
-      <button onclick="generateBio()" class="btn">Generate Page</button>
+      <label>Your Display Name:</label>
+      <input type="text" id="displayName" placeholder="e.g. GlamByTina" />
+
+      <label>Profile Bio:</label>
+      <textarea id="bioText" placeholder="Short intro or tagline..."></textarea>
+
+      <label>Add Links:</label>
+      <div id="linkList"></div>
+      <button class="btn" onclick="addLink()">+ Add Link</button>
+      <button class="btn" onclick="renderBioPage()">Generate Page</button>
     </div>
-    <div id="bioPreview" class="card" style="display:none;">
-      <h3>Preview</h3>
-      <div id="bioPage" style="padding:1rem; background:#fafafa;"></div>
+
+    <div class="card" id="bioPreview" style="display:none;">
+      <h2 id="previewName"></h2>
+      <p id="previewBio"></p>
+      <div id="previewLinks" style="margin-top:1em;"></div>
     </div>
   </main>
+
   <script>
-    function generateBio() {
-      const biz = document.getElementById('bizName').value;
-      const links = [1, 2, 3].map(i => document.getElementById(`link${i}`).value);
-      const container = document.getElementById('bioPage');
-      container.innerHTML = `<h2>${biz}</h2>` + links.filter(Boolean).map(l => `<p><a href="${l}" target="_blank">${l}</a></p>`).join('');
+    function addLink() {
+      const container = document.getElementById('linkList');
+      const div = document.createElement('div');
+      div.innerHTML = '<input type="text" placeholder="Link Text" class="linkLabel" /> <input type="url" placeholder="https://..." class="linkURL" /><br><br>';
+      container.appendChild(div);
+    }
+
+    function renderBioPage() {
+      const name = document.getElementById('displayName').value;
+      const bio = document.getElementById('bioText').value;
+      const labels = document.querySelectorAll('.linkLabel');
+      const urls = document.querySelectorAll('.linkURL');
+      const preview = document.getElementById('previewLinks');
+      preview.innerHTML = '';
+
+      for (let i = 0; i < labels.length; i++) {
+        if (labels[i].value && urls[i].value) {
+          const a = document.createElement('a');
+          a.href = urls[i].value;
+          a.textContent = labels[i].value;
+          a.className = 'btn';
+          a.target = '_blank';
+          preview.appendChild(a);
+        }
+      }
+
+      document.getElementById('previewName').textContent = name;
+      document.getElementById('previewBio').textContent = bio;
       document.getElementById('bioPreview').style.display = 'block';
     }
   </script>
