@@ -2,88 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>🛠️ Ad Wizard – AdBuddy AZ</title>
+  <title>🧙‍♀️ Ad Wizard – AdBuddy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f1ff;
+      padding: 1em;
+      color: #333;
+    }
+    h1 { text-align: center; }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1em;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.6em;
+      margin-top: 0.2em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 1.2em;
+      padding: 0.6em 1.2em;
+      background: #6c4aff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .card {
+      background: white;
+      padding: 1em;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 1.5em;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      padding: 0.6em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-  <header class="hero">
-    <h1>🛠️ Ad Wizard</h1>
-    <a href="index.html" class="btn-secondary">← Back to Home</a>
-  </header>
+  <h1>🧙‍♀️ Ad Wizard</h1>
 
-  <main>
-    <div class="card">
-      <label for="bizType">Business Type:</label>
-      <select id="bizType">
-        <option value="">Choose one</option>
-        <option>Hair Stylist</option>
-        <option>Nail Tech</option>
-        <option>Real Estate Agent</option>
-        <option>Tattoo Artist</option>
-        <option>Local Shop</option>
-        <option>Event Planner</option>
-        <option>Food Truck</option>
-        <option>Makeup Artist</option>
-        <option>Cleaning Service</option>
-      </select>
+  <label>What type of business?</label>
+  <select id="bizType">
+    <option value="nail salon">Nail Salon</option>
+    <option value="hair stylist">Hair Stylist</option>
+    <option value="eyelash tech">Eyelash Tech</option>
+    <option value="real estate agent">Real Estate Agent</option>
+    <option value="boutique owner">Boutique Owner</option>
+    <option value="massage therapist">Massage Therapist</option>
+  </select>
 
-      <label for="tone">Ad Style:</label>
-      <select id="tone">
-        <option value="">Choose one</option>
-        <option value="fun">🎉 Fun & Exciting</option>
-        <option value="friendly">😊 Friendly & Welcoming</option>
-        <option value="luxury">💎 High-End & Luxury</option>
-        <option value="urgent">⏳ Limited Time Offer</option>
-      </select>
+  <label>What’s your offer or promo?</label>
+  <input type="text" id="offer" placeholder="20% off new clients, free consult, etc.">
 
-      <button class="btn" onclick="generateAd()">Generate Ad</button>
-    </div>
+  <label>Location or service area?</label>
+  <input type="text" id="location" placeholder="Tucson, Downtown, etc.">
 
-    <div class="card" id="outputCard" style="display:none;">
-      <h3>🎯 Your Custom Ad:</h3>
-      <p id="adResult"></p>
-      <button class="btn" onclick="copyAd()">📋 Copy Ad</button>
-    </div>
-  </main>
+  <label>Preferred tone:</label>
+  <select id="tone">
+    <option value="fun and friendly">Fun & Friendly</option>
+    <option value="professional and trustworthy">Professional & Trustworthy</option>
+    <option value="bold and hype">Bold & Hype</option>
+  </select>
+
+  <button onclick="generateAd()">✨ Generate Ad</button>
+
+  <div id="output" class="card" style="display:none;">
+    <h2>Your Ad Copy</h2>
+    <textarea id="adText" readonly></textarea>
+    <button onclick="copyAd()">📋 Copy Ad</button>
+    <button onclick="downloadAd()">⬇ Download .txt</button>
+  </div>
 
   <script>
     function generateAd() {
-      const biz = document.getElementById('bizType').value;
-      const tone = document.getElementById('tone').value;
-      const result = document.getElementById('adResult');
-      const output = document.getElementById('outputCard');
+      const type = document.getElementById("bizType").value;
+      const offer = document.getElementById("offer").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const tone = document.getElementById("tone").value;
 
-      if (!biz || !tone) {
-        alert('Please select both a business type and ad style.');
-        return;
-      }
+      let headline = "";
+      let body = "";
+      let hashtags = "";
 
-      let ad = '';
       switch (tone) {
-        case 'fun':
-          ad = `🎉 Attention Arizona! If you're looking for the best ${biz} experience in town, we're the place to be! Book today and treat yourself!`;
+        case "fun and friendly":
+          headline = `💅 ${type.charAt(0).toUpperCase() + type.slice(1)} Glow-Up Time!`;
+          body = `Hey Tucson! Looking for a fresh new look? Our ${type} is offering ${offer} just for YOU! 🌈 Come through, feel fabulous.`;
+          hashtags = "#TucsonBeauty #GlowUp #SupportLocal";
           break;
-        case 'friendly':
-          ad = `Hey neighbor! Need a reliable ${biz}? We're local, passionate, and ready to help. DM us to schedule! 🧡`;
+        case "professional and trustworthy":
+          headline = `🌟 Trusted ${type} Services in ${location}`;
+          body = `Looking for quality and care? Our ${type} offers ${offer} with top-rated service. Book your appointment today in ${location}.`;
+          hashtags = "#LocalBusiness #TucsonAZ #ClientCare";
           break;
-        case 'luxury':
-          ad = `💎 Experience next-level service. Our ${biz} clients get the VIP treatment. Book your premium session today.`;
-          break;
-        case 'urgent':
-          ad = `⏳ FLASH SALE! Only a few spots left for premium ${biz} services this week. Act fast – book now!`;
+        case "bold and hype":
+          headline = `🔥 LIMITED TIME: ${offer.toUpperCase()} at the BEST ${type.toUpperCase()} in ${location.toUpperCase()}!`;
+          body = `Don't wait! Our ${type} is the talk of Tucson! Lock in this deal: ${offer}. You deserve the best 💯`;
+          hashtags = "#BossBabe #LevelUp #TucsonDeals";
           break;
       }
 
-      result.textContent = ad;
-      output.style.display = 'block';
+      const finalAd = `${headline}\n\n${body}\n\n${hashtags}`;
+      document.getElementById("adText").value = finalAd;
+      document.getElementById("output").style.display = "block";
     }
 
     function copyAd() {
-      const text = document.getElementById('adResult').textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        alert('Ad copied to clipboard!');
-      });
+      const txt = document.getElementById("adText").value;
+      navigator.clipboard.writeText(txt).then(() => alert("Copied to clipboard!"));
+    }
+
+    function downloadAd() {
+      const txt = document.getElementById("adText").value;
+      const blob = new Blob([txt], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ad.txt";
+      a.click();
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>
