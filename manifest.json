@@ -1,14 +1,19 @@
 {
-  "name": "Local Reach AZ",
-  "short_name": "LocalReach",
-  "start_url": "index.html",
+  "name": "AdBuddy AZ Pro Tools",
+  "short_name": "AdBuddy",
+  "start_url": "protools.html",
   "display": "standalone",
-  "background_color": "#f4a261",
-  "theme_color": "#f4a261",
+  "background_color": "#fdfcfb",
+  "theme_color": "#ff5e84",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
