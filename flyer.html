@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 Flyer Generator – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <h1>📄 Flyer Generator</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+  <main>
+    <div class="card">
+      <label>Flyer Title</label>
+      <input type="text" id="flyerTitle" placeholder="e.g. 20% Off This Week!" />
+
+      <label>Details</label>
+      <textarea id="flyerText" placeholder="Describe your offer, dates, location, etc."></textarea>
+
+      <label>Contact Info</label>
+      <input type="text" id="flyerContact" placeholder="e.g. IG @yourbiz | 555-1234" />
+
+      <label>Upload Image (optional)</label>
+      <input type="file" accept="image/*" id="flyerImage" onchange="previewImage(event)" />
+
+      <button class="btn" onclick="updateFlyer()">Preview Flyer</button>
+    </div>
+
+    <div class="card" id="flyerPreview" style="text-align:center; background:#fff; padding:20px;">
+      <h2 id="previewTitle">Your Title Here</h2>
+      <img id="previewImg" src="" style="max-width:100%; max-height:200px; display:none;" />
+      <p id="previewText">Flyer content will go here...</p>
+      <p><strong id="previewContact"></strong></p>
+    </div>
+
+    <div class="card">
+      <button class="btn" onclick="downloadImage()">📸 Download as Image</button>
+      <button class="btn" onclick="downloadPDF()">🖨️ Save as PDF</button>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function previewImage(event) {
+      const img = document.getElementById('previewImg');
+      img.src = URL.createObjectURL(event.target.files[0]);
+      img.style.display = 'block';
+    }
+
+    function updateFlyer() {
+      document.getElementById('previewTitle').textContent = document.getElementById('flyerTitle').value || "Your Title Here";
+      document.getElementById('previewText').textContent = document.getElementById('flyerText').value || "Flyer content will go here...";
+      document.getElementById('previewContact').textContent = document.getElementById('flyerContact').value || "";
+    }
+
+    function downloadImage() {
+      html2canvas(document.querySelector("#flyerPreview")).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'flyer.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    function downloadPDF() {
+      const flyer = document.getElementById('flyerPreview');
+      html2pdf().from(flyer).save('flyer.pdf');
+    }
+  </script>
+</body>
+</html>
