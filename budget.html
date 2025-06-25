@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>💰 Budget Helper – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <h1>💰 Budget Helper</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
+  <main>
+    <div class="card">
+      <label>Total Monthly Ad Budget ($)</label>
+      <input type="number" id="totalBudget" placeholder="e.g. 500" />
+
+      <label>What’s your main goal?</label>
+      <select id="goalSelect">
+        <option value="followers">Grow followers</option>
+        <option value="leads">Get leads/bookings</option>
+        <option value="visits">Drive store visits</option>
+        <option value="sales">Increase sales</option>
+      </select>
+
+      <label>Select Platforms:</label>
+      <div>
+        <label><input type="checkbox" value="Instagram" checked /> Instagram</label><br/>
+        <label><input type="checkbox" value="Facebook" /> Facebook</label><br/>
+        <label><input type="checkbox" value="TikTok" /> TikTok</label><br/>
+        <label><input type="checkbox" value="Google" /> Google</label><br/>
+        <label><input type="checkbox" value="Pinterest" /> Pinterest</label>
+      </div>
+
+      <button class="btn" onclick="generatePlan()">Generate Plan</button>
+    </div>
+
+    <div class="card" id="resultCard" style="display:none;">
+      <h3>Your Recommended Budget Plan</h3>
+      <div id="budgetResult"></div>
+      <button class="btn" onclick="downloadPDF()">📄 Download PDF</button>
+    </div>
+  </main>
+
+  <script>
+    function generatePlan() {
+      const budget = parseFloat(document.getElementById('totalBudget').value);
+      const goal = document.getElementById('goalSelect').value;
+      const result = document.getElementById('budgetResult');
+      const platforms = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(cb => cb.value);
+
+      if (isNaN(budget) || budget <= 0 || platforms.length === 0) {
+        alert('Please enter a valid budget and select at least one platform.');
+        return;
+      }
+
+      const plan = [];
+      let strategy = '';
+      let split = {};
+
+      switch (goal) {
+        case 'followers':
+          strategy = "Focus on social media growth and daily visibility.";
+          split = { Instagram: 0.4, TikTok: 0.3, Facebook: 0.2, Pinterest: 0.1 };
+          break;
+        case 'leads':
+          strategy = "Focus on targeted lead capture and booking actions.";
+          split = { Facebook: 0.4, Google: 0.3, Instagram: 0.2, TikTok: 0.1 };
+          break;
+        case 'visits':
+          strategy = "Drive nearby traffic using local targeting.";
+          split = { Google: 0.4, Facebook: 0.3, Instagram: 0.2, TikTok: 0.1 };
+          break;
+        case 'sales':
+          strategy = "Retargeting, urgency, and high-converting creatives.";
+          split = { Instagram: 0.3, Facebook: 0.3, Google: 0.3, Pinterest: 0.1 };
+          break;
+      }
+
+      let totalSplit = 0;
+      platforms.forEach(p => totalSplit += (split[p] || 0));
+
+      result.innerHTML = `<p><strong>Strategy:</strong> ${strategy}</p>`;
+      result.innerHTML += `<p><strong>Total Budget:</strong> $${budget.toFixed(2)} (${(budget/4).toFixed(2)}/week)</p><ul>`;
+
+      platforms.forEach(p => {
+        const percent = (split[p] || 0) / totalSplit;
+        const monthly = budget * percent;
+        const weekly = monthly / 4;
+        plan.push({ platform: p, monthly, weekly });
+        result.innerHTML += `<li><strong>${p}:</strong> $${monthly.toFixed(2)} per month (~$${weekly.toFixed(2)} per week)</li>`;
+      });
+
+      result.innerHTML += "</ul>";
+      document.getElementById('resultCard').style.display = 'block';
+    }
+
+    function downloadPDF() {
+      const card = document.getElementById('resultCard');
+      html2pdf().from(card).save("ad_budget_plan.pdf");
+    }
+  </script>
+</body>
+</html>
