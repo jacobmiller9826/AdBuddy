@@ -2,153 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>📱 QR Code Maker – AdBuddy AZ</title>
+  <title>🔗 QR Code Maker – AdBuddy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f9ff;
+      padding: 1em;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 0.6em;
+      margin-bottom: 1em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 0.6em 1.2em;
+      background: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    img {
+      margin-top: 1em;
+      max-width: 200px;
+    }
+  </style>
 </head>
 <body>
-  <header class="hero">
-    <h1>📱 QR Code Maker</h1>
-    <a href="index.html" class="btn-secondary">← Back to Home</a>
-  </header>
-
-  <main>
-    <div class="card">
-      <label for="qrType">Select QR Code Type:</label>
-      <select id="qrType" onchange="updatePlaceholder()">
-        <option value="url">URL</option>
-        <option value="phone">Phone Number</option>
-        <option value="sms">SMS Message</option>
-        <option value="email">Email</option>
-        <option value="text">Plain Text</option>
-      </select>
-
-      <label for="qrInput" id="qrLabel">Enter URL:</label>
-      <input type="text" id="qrInput" placeholder="https://example.com" />
-
-      <label for="fgColor">Foreground Color:</label>
-      <input type="color" id="fgColor" value="#000000" />
-
-      <label for="bgColor">Background Color:</label>
-      <input type="color" id="bgColor" value="#ffffff" />
-
-      <button class="btn" onclick="generateQRCode()">Generate QR Code</button>
-    </div>
-
-    <div class="card" style="text-align:center;">
-      <div id="qrcode"></div>
-      <button class="btn" id="downloadBtn" style="display:none;" onclick="downloadQRCode()">Download PNG</button>
-    </div>
-  </main>
+  <h1>🔗 QR Code Maker</h1>
+  <input type="text" id="qrInput" placeholder="Paste your link or message..." />
+  <br />
+  <button onclick="generateQR()">Generate</button>
+  <div id="qrDisplay"></div>
 
   <script>
-    const qrType = document.getElementById('qrType');
-    const qrInput = document.getElementById('qrInput');
-    const qrLabel = document.getElementById('qrLabel');
-    const qrcodeDiv = document.getElementById('qrcode');
-    const downloadBtn = document.getElementById('downloadBtn');
+    function generateQR() {
+      const text = document.getElementById("qrInput").value.trim();
+      if (!text) return;
 
-    function updatePlaceholder() {
-      const type = qrType.value;
-      switch (type) {
-        case 'url':
-          qrLabel.textContent = 'Enter URL:';
-          qrInput.placeholder = 'https://example.com';
-          break;
-        case 'phone':
-          qrLabel.textContent = 'Enter Phone Number:';
-          qrInput.placeholder = '+15555555555';
-          break;
-        case 'sms':
-          qrLabel.textContent = 'Enter Phone Number and Message (phone|message):';
-          qrInput.placeholder = '+15555555555|Your message here';
-          break;
-        case 'email':
-          qrLabel.textContent = 'Enter Email Address:';
-          qrInput.placeholder = 'example@example.com';
-          break;
-        case 'text':
-          qrLabel.textContent = 'Enter Text:';
-          qrInput.placeholder = 'Any text here';
-          break;
-      }
-      qrInput.value = '';
-      clearQRCode();
+      const url = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(text)}&size=200x200`;
+
+      document.getElementById("qrDisplay").innerHTML = `
+        <img src="${url}" alt="QR Code">
+        <br><a href="${url}" download="qrcode.png"><button style="margin-top:1em;">⬇ Download QR</button></a>
+      `;
     }
-
-    function clearQRCode() {
-      qrcodeDiv.innerHTML = '';
-      downloadBtn.style.display = 'none';
-    }
-
-    function generateQRCode() {
-      const type = qrType.value;
-      let value = qrInput.value.trim();
-      if (!value) {
-        alert('Please enter the required input.');
-        return;
-      }
-
-      let qrData = '';
-
-      switch (type) {
-        case 'url':
-          qrData = value;
-          break;
-        case 'phone':
-          qrData = `tel:${value}`;
-          break;
-        case 'sms':
-          const parts = value.split('|');
-          if (parts.length < 2) {
-            alert('Please enter phone and message separated by |');
-            return;
-          }
-          qrData = `SMSTO:${parts[0]}:${parts[1]}`;
-          break;
-        case 'email':
-          qrData = `mailto:${value}`;
-          break;
-        case 'text':
-          qrData = value;
-          break;
-      }
-
-      clearQRCode();
-
-      const fg = document.getElementById('fgColor').value;
-      const bg = document.getElementById('bgColor').value;
-
-      QRCode.toCanvas(qrcodeDiv, qrData, {
-        width: 200,
-        color: {
-          dark: fg,
-          light: bg
-        }
-      }, function (error) {
-        if (error) {
-          alert('Error generating QR code');
-          console.error(error);
-        } else {
-          downloadBtn.style.display = 'inline-block';
-        }
-      });
-    }
-
-    function downloadQRCode() {
-      const canvas = qrcodeDiv.querySelector('canvas');
-      if (!canvas) {
-        alert('Please generate a QR code first.');
-        return;
-      }
-      const link = document.createElement('a');
-      link.download = 'qrcode.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }
-
-    updatePlaceholder();
   </script>
 </body>
 </html>
