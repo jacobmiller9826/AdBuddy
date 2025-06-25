@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🎨 Brand Colors – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>🎨 Brand Color Picker</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
+  <main>
+    <div class="card">
+      <label>Choose up to 4 Brand Colors:</label>
+      <div id="colorPickers">
+        <input type="color" value="#FF6B6B" onchange="updatePalette()" />
+        <input type="color" value="#FFD93D" onchange="updatePalette()" />
+        <input type="color" value="#6BCB77" onchange="updatePalette()" />
+        <input type="color" value="#4D96FF" onchange="updatePalette()" />
+      </div>
+      <button class="btn" onclick="savePalette()">💾 Save Palette</button>
+    </div>
+
+    <div class="card" id="previewPalette">
+      <h3>Preview</h3>
+      <div id="colorPreview" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+    </div>
+  </main>
+
+  <script>
+    function updatePalette() {
+      const colors = Array.from(document.querySelectorAll('#colorPickers input')).map(i => i.value);
+      const preview = document.getElementById('colorPreview');
+      preview.innerHTML = '';
+      colors.forEach(color => {
+        const box = document.createElement('div');
+        box.style.background = color;
+        box.style.width = '80px';
+        box.style.height = '80px';
+        box.style.borderRadius = '10px';
+        box.style.display = 'flex';
+        box.style.alignItems = 'center';
+        box.style.justifyContent = 'center';
+        box.style.color = '#fff';
+        box.style.fontWeight = 'bold';
+        box.innerText = color;
+        preview.appendChild(box);
+      });
+    }
+
+    function savePalette() {
+      const colors = Array.from(document.querySelectorAll('#colorPickers input')).map(i => i.value);
+      localStorage.setItem('adbuddy_palette', JSON.stringify(colors));
+      alert('Palette saved!');
+    }
+
+    window.onload = updatePalette;
+  </script>
+</body>
+</html>
