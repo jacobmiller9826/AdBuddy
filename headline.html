@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>✍️ Headline Generator – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>✍️ Smart Ad Headline Generator</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
+  <main>
+    <div class="card">
+      <label>Business Type:</label>
+      <input type="text" id="bizType" placeholder="e.g. Nail Salon, Mobile Detailer" />
+
+      <label>Target Audience:</label>
+      <input type="text" id="audience" placeholder="e.g. busy moms, local teens" />
+
+      <label>Style / Tone:</label>
+      <select id="tone">
+        <option value="fun">Fun</option>
+        <option value="bold">Bold</option>
+        <option value="classy">Classy</option>
+        <option value="urgent">Urgent</option>
+        <option value="calm">Calm</option>
+      </select>
+
+      <button class="btn" onclick="generateHeadline()">✨ Generate Headline</button>
+    </div>
+
+    <div class="card" id="outputCard" style="display:none;">
+      <h3>Your Headline:</h3>
+      <p id="outputText" style="font-size:1.2em;font-weight:bold;"></p>
+      <button class="btn" onclick="copyHeadline()">📋 Copy</button>
+    </div>
+  </main>
+
+  <script>
+    const fun = [
+      "✨ Say hello to better {bizType} for {audience}!",
+      "💅 Because {audience} deserve the best {bizType}.",
+      "Get it, girl! Your {bizType} game just leveled up."
+    ];
+    const bold = [
+      "🔥 {bizType} that demands attention.",
+      "No more waiting – {audience}, it’s your turn!",
+      "Dominate your look with our expert {bizType}."
+    ];
+    const classy = [
+      "Refined {bizType} tailored for {audience}.",
+      "Elegance is just one booking away.",
+      "Style meets substance in every {bizType} we deliver."
+    ];
+    const urgent = [
+      "🚨 Limited spots left for {bizType} – book now!",
+      "Hey {audience}, this deal won’t wait!",
+      "Only a few appointments left this week!"
+    ];
+    const calm = [
+      "Relax, refresh, and revive with soothing {bizType}.",
+      "Gentle {bizType} for your self-care moments.",
+      "Slow down and treat yourself – you deserve it."
+    ];
+
+    function generateHeadline() {
+      const tone = document.getElementById('tone').value;
+      const biz = document.getElementById('bizType').value || 'service';
+      const target = document.getElementById('audience').value || 'everyone';
+
+      const sets = { fun, bold, classy, urgent, calm };
+      const templates = sets[tone];
+      const chosen = templates[Math.floor(Math.random() * templates.length)];
+      const headline = chosen.replace('{bizType}', biz).replace('{audience}', target);
+
+      document.getElementById('outputText').textContent = headline;
+      document.getElementById('outputCard').style.display = 'block';
+    }
+
+    function copyHeadline() {
+      const text = document.getElementById('outputText').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
