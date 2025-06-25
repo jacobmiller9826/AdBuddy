@@ -1,36 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Before & After Maker – AdBuddy AZ</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .preview { display: flex; gap: 10px; margin-top: 1rem; }
-    .preview img { width: 48%; height: auto; object-fit: cover; border: 2px solid #aaa; }
-  </style>
+  <meta charset="UTF-8" />
+  <title>🪞 Before & After Tool – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="hero">
+    <h1>🪞 Before & After Tool</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
   <main>
-    <h2>📸 Before & After Collage</h2>
     <div class="card">
-      <label>Upload Before Photo:</label>
-      <input type="file" accept="image/*" onchange="previewImage(this, 'before')" />
-      <label>Upload After Photo:</label>
-      <input type="file" accept="image/*" onchange="previewImage(this, 'after')" />
-      <div class="preview" id="previewArea">
-        <img id="before" alt="Before" />
-        <img id="after" alt="After" />
+      <label>Upload Before Image:</label>
+      <input type="file" accept="image/*" onchange="loadImage(event, 'beforeImg')" />
+
+      <label>Upload After Image:</label>
+      <input type="file" accept="image/*" onchange="loadImage(event, 'afterImg')" />
+
+      <div style="margin-top:1em;">
+        <label>Before Label:</label>
+        <input type="text" id="beforeLabel" value="Before" oninput="updateLabels()" />
+        <label>After Label:</label>
+        <input type="text" id="afterLabel" value="After" oninput="updateLabels()" />
+      </div>
+    </div>
+
+    <div class="card" style="display:flex; flex-direction:row; flex-wrap:wrap; justify-content:space-around;">
+      <div style="text-align:center;">
+        <p id="beforeText"><strong>Before</strong></p>
+        <img id="beforeImg" src="" style="max-width:100%; max-height:300px;" />
+      </div>
+      <div style="text-align:center;">
+        <p id="afterText"><strong>After</strong></p>
+        <img id="afterImg" src="" style="max-width:100%; max-height:300px;" />
       </div>
     </div>
   </main>
+
   <script>
-    function previewImage(input, id) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById(id).src = e.target.result;
-      };
-      reader.readAsDataURL(input.files[0]);
+    function loadImage(event, targetId) {
+      const img = document.getElementById(targetId);
+      img.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function updateLabels() {
+      document.getElementById('beforeText').innerHTML = '<strong>' + document.getElementById('beforeLabel').value + '</strong>';
+      document.getElementById('afterText').innerHTML = '<strong>' + document.getElementById('afterLabel').value + '</strong>';
     }
   </script>
 </body>
