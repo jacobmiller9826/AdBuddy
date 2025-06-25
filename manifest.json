@@ -1,10 +1,10 @@
 {
-  "name": "AdBuddy AZ Pro Tools",
-  "short_name": "AdBuddy",
-  "start_url": "protools.html",
+  "name": "Ad Wizard – AdBuddy",
+  "short_name": "AdWizard",
+  "start_url": "wizard.html",
   "display": "standalone",
-  "background_color": "#fdfcfb",
-  "theme_color": "#ff5e84",
+  "background_color": "#f9f1ff",
+  "theme_color": "#6c4aff",
   "icons": [
     {
       "src": "icon-192.png",
