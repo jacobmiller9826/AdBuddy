@@ -1,48 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Caption Generator – AdBuddy AZ</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>🧲 Captions + Hashtags – AdBuddy AZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="hero">
+    <h1>🧲 Caption + Hashtag Generator</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
   <main>
-    <h2>💬 Auto Caption Generator</h2>
     <div class="card">
-      <textarea id="captionInput" placeholder="Describe your ad, service, or offer..." rows="4"></textarea>
-      <label>Pick a style:</label>
+      <label>Business Type:</label>
+      <input type="text" id="biz" placeholder="e.g. Lash Artist, Hair Braider" />
+
+      <label>Post Topic:</label>
+      <input type="text" id="topic" placeholder="e.g. grand opening, summer glow" />
+
+      <label>Style / Tone:</label>
       <select id="tone">
-        <option value="friendly">💖 Friendly</option>
-        <option value="bold">🔥 Bold</option>
-        <option value="chill">🌿 Chill</option>
-        <option value="boss">👑 Boss Babe</option>
+        <option value="fun">Fun</option>
+        <option value="confident">Confident</option>
+        <option value="elegant">Elegant</option>
+        <option value="spiritual">Spiritual</option>
       </select>
-      <button class="btn" onclick="generateCaption()">Generate</button>
+
+      <button class="btn" onclick="generateCaption()">✨ Generate Caption</button>
     </div>
 
-    <div class="card" id="output" style="display:none;">
-      <h3>Your Caption</h3>
-      <p id="captionBox"></p>
-      <button onclick="copyCaption()" class="btn-secondary">📋 Copy</button>
+    <div class="card" id="results" style="display:none;">
+      <h3>Caption:</h3>
+      <p id="captionText"></p>
+      <h3>Hashtags:</h3>
+      <p id="hashtagsText"></p>
+      <button class="btn" onclick="copyText()">📋 Copy All</button>
     </div>
   </main>
 
   <script>
+    const captionSets = {
+      fun: [
+        "Let’s glow, babes! 💖 Our {biz} is bringing serious heat for {topic} 🔥",
+        "Sassy, classy, and {biz} magic – just in time for {topic}! 💅✨",
+        "You + {biz} = summer perfection 😎 Don’t miss our {topic} special!"
+      ],
+      confident: [
+        "We don’t compete, we dominate. {biz} just leveled up for {topic}. 🔥",
+        "{topic}? Say less. Our {biz} team’s got you covered. 💪",
+        "This is the sign you were waiting for. Book your {biz} for {topic}."
+      ],
+      elegant: [
+        "Grace in every detail. Experience true beauty with our {biz} this {topic}. 💫",
+        "Let your elegance speak. Handcrafted {biz} looks await. 🌸",
+        "Refined. Radiant. Ready. Our {biz} is your moment this {topic}."
+      ],
+      spiritual: [
+        "Aligned, beautiful, and blessed. Our {biz} honors your glow. ✨",
+        "Raise your frequency this {topic} with mindful {biz}. 🌿",
+        "Spirit-led style. Let your {biz} be a ritual of love. 🌙"
+      ]
+    };
+
     function generateCaption() {
-      const text = document.getElementById("captionInput").value;
       const tone = document.getElementById("tone").value;
-      let emoji = { friendly: "✨", bold: "🔥", chill: "🌿", boss: "👑" }[tone];
-      let tag = "#TucsonBeauty #AZGlow #AdBuddyAZ";
-      const caption = `${emoji} ${text.trim()} ${emoji}\n\nBook now 👉 link in bio!\n${tag}`;
-      document.getElementById("captionBox").innerText = caption;
-      document.getElementById("output").style.display = "block";
+      const biz = document.getElementById("biz").value || "service";
+      const topic = document.getElementById("topic").value || "this season";
+      const caps = captionSets[tone];
+      const caption = caps[Math.floor(Math.random() * caps.length)]
+                        .replace("{biz}", biz)
+                        .replace("{topic}", topic);
+
+      const tags = `#${biz.replace(/\\s+/g, '')} #${topic.replace(/\\s+/g, '')} #${tone}vibes #azbeauty #smallbizlove`;
+
+      document.getElementById("captionText").textContent = caption;
+      document.getElementById("hashtagsText").textContent = tags;
+      document.getElementById("results").style.display = "block";
     }
 
-    function copyCaption() {
-      const text = document.getElementById("captionBox").innerText;
-      navigator.clipboard.writeText(text);
-      alert("📋 Copied to clipboard!");
+    function copyText() {
+      const caption = document.getElementById("captionText").textContent;
+      const tags = document.getElementById("hashtagsText").textContent;
+      navigator.clipboard.writeText(caption + "\\n" + tags).then(() => {
+        alert("Copied to clipboard!");
+      });
     }
   </script>
 </body>
