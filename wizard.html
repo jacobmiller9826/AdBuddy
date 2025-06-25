@@ -2,53 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>🛠️ Ad Wizard – AdBuddy AZ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ad Wizard – Local Reach AZ</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="hero">
+    <h1>🛠️ Ad Wizard</h1>
+    <a href="index.html" class="btn-secondary">← Back to Home</a>
+  </header>
+
   <main>
-    <h2>Create Your Ad</h2>
     <div class="card">
-      <label for="preset">Choose a Business Type:</label>
-      <select id="preset">
-        <option value="">-- Select a business --</option>
-        <option value="nails">Nail Salon</option>
-        <option value="tanning">Tanning</option>
-        <option value="eyebrows">Eyebrow Studio</option>
-        <option value="waxing">Waxing</option>
-        <option value="massage">Massage Therapy</option>
-        <option value="skincare">Skincare</option>
-        <option value="lashes">Lashes</option>
-        <option value="makeup">Makeup Artist</option>
-        <option value="spa">Day Spa</option>
-        <option value="boutique">Women's Boutique</option>
+      <label for="bizType">Business Type:</label>
+      <select id="bizType">
+        <option value="">Choose one</option>
+        <option>Hair Stylist</option>
+        <option>Nail Tech</option>
+        <option>Real Estate Agent</option>
+        <option>Tattoo Artist</option>
+        <option>Local Shop</option>
+        <option>Event Planner</option>
+        <option>Food Truck</option>
+        <option>Makeup Artist</option>
+        <option>Cleaning Service</option>
       </select>
 
-      <label for="bizName">Business Name:</label>
-      <input type="text" id="bizName" />
+      <label for="tone">Ad Style:</label>
+      <select id="tone">
+        <option value="">Choose one</option>
+        <option value="fun">🎉 Fun & Exciting</option>
+        <option value="friendly">😊 Friendly & Welcoming</option>
+        <option value="luxury">💎 High-End & Luxury</option>
+        <option value="urgent">⏳ Limited Time Offer</option>
+      </select>
 
-      <label for="offer">Offer or Service:</label>
-      <input type="text" id="offer" />
-
-      <label for="location">Location:</label>
-      <input type="text" id="location" />
-
-      <label for="special">Special Deal:</label>
-      <input type="text" id="special" />
-
-      <label for="contact">Contact Info:</label>
-      <input type="text" id="contact" />
-
-      <button onclick="generateAd()" class="btn">Generate Ad</button>
+      <button class="btn" onclick="generateAd()">Generate Ad</button>
     </div>
 
-    <div id="result" class="card" style="display:none;">
-      <h3>Your Ad Preview</h3>
-      <pre id="output"></pre>
+    <div class="card" id="outputCard" style="display:none;">
+      <h3>🎯 Your Custom Ad:</h3>
+      <p id="adResult"></p>
+      <button class="btn" onclick="copyAd()">📋 Copy Ad</button>
     </div>
   </main>
-  <script src="common.js"></script>
-  <script src="wizard.js"></script>
+
+  <script>
+    function generateAd() {
+      const biz = document.getElementById('bizType').value;
+      const tone = document.getElementById('tone').value;
+      const result = document.getElementById('adResult');
+      const output = document.getElementById('outputCard');
+
+      if (!biz || !tone) {
+        alert('Please select both a business type and ad style.');
+        return;
+      }
+
+      let ad = '';
+      switch (tone) {
+        case 'fun':
+          ad = `🎉 Attention Arizona! If you're looking for the best ${biz} experience in town, we're the place to be! Book today and treat yourself!`;
+          break;
+        case 'friendly':
+          ad = `Hey neighbor! Need a reliable ${biz}? We're local, passionate, and ready to help. DM us to schedule! 🧡`;
+          break;
+        case 'luxury':
+          ad = `💎 Experience next-level service. Our ${biz} clients get the VIP treatment. Book your premium session today.`;
+          break;
+        case 'urgent':
+          ad = `⏳ FLASH SALE! Only a few spots left for premium ${biz} services this week. Act fast – book now!`;
+          break;
+      }
+
+      result.textContent = ad;
+      output.style.display = 'block';
+    }
+
+    function copyAd() {
+      const text = document.getElementById('adResult').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Ad copied to clipboard!');
+      });
+    }
+  </script>
 </body>
 </html>
