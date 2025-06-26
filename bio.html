@@ -2,67 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>🌐 Link in Bio – AdBuddy AZ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="hero">
-    <h1>🌐 Link in Bio</h1>
-    <a href="index.html" class="btn-secondary">← Back to Home</a>
-  </header>
-
-  <main>
-    <div class="card">
-      <label>Your Display Name:</label>
-      <input type="text" id="displayName" placeholder="e.g. GlamByTina" />
-
-      <label>Profile Bio:</label>
-      <textarea id="bioText" placeholder="Short intro or tagline..."></textarea>
-
-      <label>Add Links:</label>
-      <div id="linkList"></div>
-      <button class="btn" onclick="addLink()">+ Add Link</button>
-      <button class="btn" onclick="renderBioPage()">Generate Page</button>
-    </div>
-
-    <div class="card" id="bioPreview" style="display:none;">
-      <h2 id="previewName"></h2>
-      <p id="previewBio"></p>
-      <div id="previewLinks" style="margin-top:1em;"></div>
-    </div>
-  </main>
-
-  <script>
-    function addLink() {
-      const container = document.getElementById('linkList');
-      const div = document.createElement('div');
-      div.innerHTML = '<input type="text" placeholder="Link Text" class="linkLabel" /> <input type="url" placeholder="https://..." class="linkURL" /><br><br>';
-      container.appendChild(div);
+  <title>Bio Generator – AdBuddy AZ</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <meta name="theme-color" content="#f4a261" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #fff7f0;
+      color: #333;
     }
 
-    function renderBioPage() {
-      const name = document.getElementById('displayName').value;
-      const bio = document.getElementById('bioText').value;
-      const labels = document.querySelectorAll('.linkLabel');
-      const urls = document.querySelectorAll('.linkURL');
-      const preview = document.getElementById('previewLinks');
-      preview.innerHTML = '';
+    h1 {
+      text-align: center;
+      color: #f26419;
+    }
 
-      for (let i = 0; i < labels.length; i++) {
-        if (labels[i].value && urls[i].value) {
-          const a = document.createElement('a');
-          a.href = urls[i].value;
-          a.textContent = labels[i].value;
-          a.className = 'btn';
-          a.target = '_blank';
-          preview.appendChild(a);
-        }
+    label {
+      font-weight: bold;
+      margin-top: 1em;
+      display: block;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.25rem;
+      background: #f26419;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔗 Bio Generator</h1>
+
+  <label for="biz">Business Type</label>
+  <input type="text" id="biz" placeholder="e.g. Lash Artist, Realtor, Nail Tech" />
+
+  <label for="tone">Tone</label>
+  <select id="tone">
+    <option value="friendly">Friendly</option>
+    <option value="professional">Professional</option>
+    <option value="inspirational">Inspirational</option>
+  </select>
+
+  <label for="city">City/Area</label>
+  <input type="text" id="city" placeholder="e.g. Tucson, East Valley, AZ" />
+
+  <button onclick="generateBio()">✨ Generate Bio</button>
+
+  <div id="output" class="card" style="display:none;">
+    <h2>Your New Bio ✨</h2>
+    <textarea id="bioText" readonly></textarea>
+    <button onclick="copyBio()">📋 Copy</button>
+    <button onclick="downloadBio()">⬇ Download .txt</button>
+  </div>
+
+  <script>
+    function generateBio() {
+      const biz = document.getElementById("biz").value.trim();
+      const tone = document.getElementById("tone").value;
+      const city = document.getElementById("city").value.trim();
+
+      if (!biz || !city) return alert("Please fill out all fields!");
+
+      let bio = "";
+
+      switch (tone) {
+        case "friendly":
+          bio = `Hi! I’m your local ${biz} based in ${city}. I’m all about good vibes, great service & glowing results. 💖 Book today!`;
+          break;
+        case "professional":
+          bio = `${biz} proudly serving ${city}. Committed to quality, professionalism, and personalized care. Let's work together.`;
+          break;
+        case "inspirational":
+          bio = `Empowering confidence through expert ${biz} services in ${city}. Let’s glow, grow, and thrive together. 🌟`;
+          break;
       }
 
-      document.getElementById('previewName').textContent = name;
-      document.getElementById('previewBio').textContent = bio;
-      document.getElementById('bioPreview').style.display = 'block';
+      document.getElementById("bioText").value = bio;
+      document.getElementById("output").style.display = "block";
+    }
+
+    function copyBio() {
+      const text = document.getElementById("bioText").value;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+
+    function downloadBio() {
+      const text = document.getElementById("bioText").value;
+      const blob = new Blob([text], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "bio.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
     }
   </script>
 </body>
