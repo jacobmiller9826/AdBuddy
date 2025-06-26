@@ -2,90 +2,153 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>🧲 Captions + Hashtags – AdBuddy AZ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header class="hero">
-    <h1>🧲 Caption + Hashtag Generator</h1>
-    <a href="index.html" class="btn-secondary">← Back to Home</a>
-  </header>
-
-  <main>
-    <div class="card">
-      <label>Business Type:</label>
-      <input type="text" id="biz" placeholder="e.g. Lash Artist, Hair Braider" />
-
-      <label>Post Topic:</label>
-      <input type="text" id="topic" placeholder="e.g. grand opening, summer glow" />
-
-      <label>Style / Tone:</label>
-      <select id="tone">
-        <option value="fun">Fun</option>
-        <option value="confident">Confident</option>
-        <option value="elegant">Elegant</option>
-        <option value="spiritual">Spiritual</option>
-      </select>
-
-      <button class="btn" onclick="generateCaption()">✨ Generate Caption</button>
-    </div>
-
-    <div class="card" id="results" style="display:none;">
-      <h3>Caption:</h3>
-      <p id="captionText"></p>
-      <h3>Hashtags:</h3>
-      <p id="hashtagsText"></p>
-      <button class="btn" onclick="copyText()">📋 Copy All</button>
-    </div>
-  </main>
-
-  <script>
-    const captionSets = {
-      fun: [
-        "Let’s glow, babes! 💖 Our {biz} is bringing serious heat for {topic} 🔥",
-        "Sassy, classy, and {biz} magic – just in time for {topic}! 💅✨",
-        "You + {biz} = summer perfection 😎 Don’t miss our {topic} special!"
-      ],
-      confident: [
-        "We don’t compete, we dominate. {biz} just leveled up for {topic}. 🔥",
-        "{topic}? Say less. Our {biz} team’s got you covered. 💪",
-        "This is the sign you were waiting for. Book your {biz} for {topic}."
-      ],
-      elegant: [
-        "Grace in every detail. Experience true beauty with our {biz} this {topic}. 💫",
-        "Let your elegance speak. Handcrafted {biz} looks await. 🌸",
-        "Refined. Radiant. Ready. Our {biz} is your moment this {topic}."
-      ],
-      spiritual: [
-        "Aligned, beautiful, and blessed. Our {biz} honors your glow. ✨",
-        "Raise your frequency this {topic} with mindful {biz}. 🌿",
-        "Spirit-led style. Let your {biz} be a ritual of love. 🌙"
-      ]
-    };
-
-    function generateCaption() {
-      const tone = document.getElementById("tone").value;
-      const biz = document.getElementById("biz").value || "service";
-      const topic = document.getElementById("topic").value || "this season";
-      const caps = captionSets[tone];
-      const caption = caps[Math.floor(Math.random() * caps.length)]
-                        .replace("{biz}", biz)
-                        .replace("{topic}", topic);
-
-      const tags = `#${biz.replace(/\\s+/g, '')} #${topic.replace(/\\s+/g, '')} #${tone}vibes #azbeauty #smallbizlove`;
-
-      document.getElementById("captionText").textContent = caption;
-      document.getElementById("hashtagsText").textContent = tags;
-      document.getElementById("results").style.display = "block";
+  <title>Caption Generator – AdBuddy AZ</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.png" />
+  <meta name="theme-color" content="#f4a261" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #fff7f0;
+      color: #333;
     }
 
-    function copyText() {
-      const caption = document.getElementById("captionText").textContent;
-      const tags = document.getElementById("hashtagsText").textContent;
-      navigator.clipboard.writeText(caption + "\\n" + tags).then(() => {
+    h1 {
+      text-align: center;
+      color: #2a9d8f;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 1em;
+      display: block;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.25rem;
+      background: #2a9d8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>💬 Caption Generator</h1>
+
+  <label for="goal">Campaign Goal</label>
+  <select id="goal">
+    <option value="book">Book More Clients</option>
+    <option value="promo">Promote a Deal</option>
+    <option value="educate">Share Tips or Info</option>
+    <option value="inspire">Inspire Your Audience</option>
+  </select>
+
+  <label for="tone">Tone</label>
+  <select id="tone">
+    <option value="fun">Fun</option>
+    <option value="chic">Chic</option>
+    <option value="professional">Professional</option>
+    <option value="bold">Bold</option>
+  </select>
+
+  <label for="keywords">Keywords (comma-separated)</label>
+  <input type="text" id="keywords" placeholder="e.g. lashes, glow, Tucson" />
+
+  <button onclick="generateCaption()">✨ Generate Caption</button>
+
+  <div id="output" class="card" style="display:none;">
+    <h2>Your Caption</h2>
+    <textarea id="captionText" readonly></textarea>
+    <button onclick="copyCaption()">📋 Copy</button>
+    <button onclick="downloadCaption()">⬇ Download .txt</button>
+  </div>
+
+  <script>
+    function generateCaption() {
+      const goal = document.getElementById("goal").value;
+      const tone = document.getElementById("tone").value;
+      const keywords = document.getElementById("keywords").value.split(',').map(k => k.trim()).filter(Boolean);
+
+      if (keywords.length === 0) return alert("Please enter at least one keyword.");
+
+      const emojiSet = {
+        book: "📅✨",
+        promo: "🔥💸",
+        educate: "💡📚",
+        inspire: "🌟💬"
+      };
+
+      const tonePhrases = {
+        fun: "Let’s get into it! 💃",
+        chic: "Elegance is everything.",
+        professional: "Delivering value every step of the way.",
+        bold: "No fluff. Just results. 👊"
+      };
+
+      const base = {
+        book: `Now booking for next week! ${tonePhrases[tone]} ${emojiSet[goal]}`,
+        promo: `Don't miss this deal — limited time only! ${tonePhrases[tone]} ${emojiSet[goal]}`,
+        educate: `Here’s a quick tip from your local pro: ${tonePhrases[tone]} ${emojiSet[goal]}`,
+        inspire: `You were made to shine. Keep going. ${tonePhrases[tone]} ${emojiSet[goal]}`
+      };
+
+      const tags = keywords.map(k => `#${k.replace(/\s+/g, '')}`).join(" ");
+
+      const caption = `${base[goal]}\n\n${tags}`;
+
+      document.getElementById("captionText").value = caption;
+      document.getElementById("output").style.display = "block";
+    }
+
+    function copyCaption() {
+      const text = document.getElementById("captionText").value;
+      navigator.clipboard.writeText(text).then(() => {
         alert("Copied to clipboard!");
       });
+    }
+
+    function downloadCaption() {
+      const text = document.getElementById("captionText").value;
+      const blob = new Blob([text], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "caption.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
     }
   </script>
 </body>
